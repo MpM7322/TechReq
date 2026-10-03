@@ -1,0 +1,49 @@
+@startuml TechSupportSystem
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Пользователь" as User
+actor "    Сотрудник\n техподдержки" as Staff
+
+package "TechReq" {
+    usecase "Регистрация в системе" as UC_Register
+    usecase "Вход в систему" as UC_Login_User
+    usecase "Написание заявки\nв техподдержку" as UC_Create_Ticket
+    usecase "Выбор категории заявки" as UC_Select_Category
+    usecase "Просмотр своих заявок" as UC_View_My_Tickets
+    usecase "Редактирование своих заявок" as UC_Edit_My_Ticket
+
+    usecase "Вход в систему" as UC_Login_Staff
+    usecase "Меню заявок в\nтехническую поддержку" as UC_Ticket_Menu
+    usecase "Добавление сотрудника\nтехнической поддержки" as UC_Add_Staff
+    usecase "Меню пользователей" as UC_User_Menu
+    usecase "Просмотр отправленных\nпользователями заявок" as UC_View_User_Tickets
+    usecase "Ответ на выбранную заявку" as UC_Answer_Ticket
+    usecase "Удаление выбранной заявки" as UC_Delete_Ticket
+    usecase "Закрытие заявки" as UC_Close_Ticket
+    usecase "Просмотр всех пользователей" as UC_View_All_Users
+}
+
+User --> UC_Register
+User --> UC_Login_User
+
+UC_Login_User --> UC_Create_Ticket
+UC_Login_User --> UC_View_My_Tickets
+UC_Login_User --> UC_Edit_My_Ticket
+
+UC_Create_Ticket --> UC_Select_Category : <<include>>
+
+Staff --> UC_Login_Staff
+
+UC_Login_Staff --> UC_Ticket_Menu
+UC_Login_Staff --> UC_Add_Staff
+UC_Login_Staff --> UC_User_Menu
+
+UC_Ticket_Menu --> UC_View_User_Tickets
+UC_User_Menu --> UC_View_All_Users
+
+UC_View_User_Tickets --> UC_Answer_Ticket
+UC_View_User_Tickets --> UC_Delete_Ticket
+
+UC_Answer_Ticket --> UC_Close_Ticket : <<include>>
+@enduml
