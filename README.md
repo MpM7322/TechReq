@@ -18,44 +18,50 @@ TechReq — консольное приложение для управлени�
 ## Структура проекта
 
 ```text
-TechReq                                  # Корневая папка проекта
+TechReq                                   # Корневая папка проекта
 │
-├── .vscode/                             # Настройки Visual Studio Code
-│   └── launch.json                      # Конфигурация запуска и отладки
+├── .vscode/                              # Настройки Visual Studio Code
+│   └── launch.json                       # Конфигурация запуска и отладки
 │
-├── .git/                                # Скрытая папка Git, содержит данные репозитория
+├── .git/                                 # Скрытая папка Git, содержит данные репозитория
 │
-├── docs/                                # Документация проекта
+├── docs/                                 # Документация проекта
 │   │               
-│   ├── MyUseCse.puml                    # Диаграмма вариантов использования
-│   ├── Request Creation Algorithm.jpg   # Блок-схема алгоритма создания заявки в техподдержку
-│   ├── Request Processing Algorithm.jpg # Блок-схема алгоритма обработки заявки
-│   └── User Registration Algorithm.jpg  # Блок-схема алгоритма регистрации пользователя
+│   ├── Login_Algorithm.png               # Алгоритм входа
+│   ├── Login_Algorithm.puml              # Алгоритм входа PUML
+│   ├── Registration_Algorithm.png        # Алгоритм Регистрации
+│   ├── Registration_Algorithm.puml       # Алгоритм Регистрации PUML
+│   ├── Request_Creation_Algorithm.png    # Алгоритм создания заявки
+│   ├── Request_Creation_Algorithm.puml   # Алгоритм создания заявки PUML
+│   ├── Request_Processing_Algorithm.png  # Алгоритм обработки заявок
+│   ├── Request_Processing_Algorithm.puml # Алгоритм обработки заявок PUML
+│   ├── TechReq.png                       # UseCase
+│   └── TechReq.puml                      # UseCase PUML
 │
-├── src/                                 # Исходный код приложения
+├── src/                                  # Исходный код приложения
 │   │
-│   └── techreq/                         # Основной пакет приложения
+│   └── techreq/                          # Основной пакет приложения
 │       │
-│       ├── __init__.py                  # Инициализация Python-пакета
-│       ├── main.py                      # Точка входа в приложение
-│       ├── auth.py                      # Логика авторизации
-│       ├── menu.py                      # Консольное меню
+│       ├── __init__.py                   # Инициализация Python-пакета
+│       ├── main.py                       # Точка входа в приложение
+│       ├── auth.py                       # Логика авторизации
+│       ├── menu.py                       # Консольное меню
 │       │
-│       ├── database/                    # Работа с базой данных
+│       ├── database/                     # Работа с базой данных
 │       │
-│       ├── models/                      # Модели предметной области
+│       ├── models/                       # Модели предметной области
 │       │
-│       ├── repositories/                # Доступ к данным
+│       ├── repositories/                 # Доступ к данным
 │       │
-│       └── services/                    # Бизнес-логика приложения
+│       └── services/                     # Бизнес-логика приложения
 │
-├── tests/                               # Автоматизированные тесты
+├── tests/                                # Автоматизированные тесты
 │   ├── __init__.py
 │   └── test_main.py
 │
-├── .gitignore                           # Исключения для Git
-├── README.md                            # Документация проекта
-└── requirements.txt                     # Зависимости проекта
+├── .gitignore                            # Исключения для Git
+├── README.md                             # Документация проекта
+└── requirements.txt                      # Зависимости проекта
 ```
 
 ## Архитектура
