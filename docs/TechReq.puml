@@ -1,4 +1,4 @@
-@startuml TechSupportSystem
+@startuml TechReq
 left to right direction
 skinparam packageStyle rectangle
 
