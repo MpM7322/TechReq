@@ -1,23 +1,35 @@
+-- Для работы через sqlite3
 PRAGMA foreign_keys = ON;
 
- -- Удаление старых таблиц (сначала зависимые таблицы)
-DROP TABLE IF EXISTS messages_in_tickets;
+-- Удаляем таблицы, если они уже существуют(сначала зависимые, потом независимые)
+DROP TABLE IF EXISTS executor_categories;
+DROP TABLE IF EXISTS ticket_resolutions;
 DROP TABLE IF EXISTS tickets;
-DROP TABLE IF EXISTS users_device;
 DROP TABLE IF EXISTS users;
 
- -- Удаление старых таблиц (после независимые таблицы)
- DROP TABLE IF EXISTS user_roles;
- DROP TABLE IF EXISTS ticket_categories;
- DROP TABLE IF EXISTS ticket_status;
+DROP TABLE IF EXISTS ticket_status;
+DROP TABLE IF EXISTS ticket_categories;
+DROP TABLE IF EXISTS user_roles;
 
--- Роли пользователей(клиент, сотрудник)
+-- Таблица ролей пользователй
 CREATE TABLE user_roles (
     user_role_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE
 );
 
--- Пользователи
+-- Таблица категорий заявок
+CREATE TABLE ticket_categories (
+    category_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+-- Таблица статусов заявок
+CREATE TABLE ticket_status (
+    ticket_status_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+-- Таблица пользователей
 CREATE TABLE users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -30,60 +42,70 @@ CREATE TABLE users (
     FOREIGN KEY (user_role) REFERENCES user_roles(user_role_id)
 );
 
-CREATE TABLE users_device (
-    device_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
--- Категории заявок
-CREATE TABLE ticket_categories (
-    category_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
-);
-
--- Статусы заявок
-CREATE TABLE ticket_status (
-    ticket_status_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
-);
-
 -- Таблица заявок
 CREATE TABLE tickets (
-    ticket_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    ticket_id INTEGER PRIMARY KEY AUTOINCREMENT,
     ticket_category_id INTEGER NOT NULL,
     ticket_description TEXT NOT NULL,
-    current_status TEXT NOT NULL,
-    ticket_created_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    created_updated_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    current_status_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     executor_id INTEGER,
 
     FOREIGN KEY (ticket_category_id) REFERENCES ticket_categories(category_id),
-    FOREIGN KEY (current_status) REFERENCES ticket_status(name),
+    FOREIGN KEY (current_status_id) REFERENCES ticket_status(ticket_status_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (executor_id) REFERENCES users(user_id)
 );
 
--- Таблица сообщений внутри заявок(Диалог между сотрудником техподдержки и пользователем)
-CREATE TABLE messages_in_tickets(
-    message_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    ticket_id INTEGER NOT NULL,
-    sender_id INTEGER NOT NULL,
-    message_text TEXT NOT NULL,
-    written_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+-- Таблица с решениями заявок
+CREATE TABLE ticket_resolutions (
+    resolution_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticket_id INTEGER NOT NULL UNIQUE,
+    solution_text TEXT NOT NULL,
 
-    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE, -- В случае удаления заявки, будут удалены все сообщения
-    FOREIGN KEY (sender_id) REFERENCES users(user_id)
+    FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE -- Если удаляется в главной таблице, то удалится и в зависимой
 );
 
-INSERT INTO user_roles(name)
-VALUES ('Client'), ('Admin');
+-- Таблица с возможностями сотрудников
+CREATE TABLE executor_categories (
+    user_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
 
-INSERT INTO ticket_categories(name)
-VALUES ('Auth&Profile'), ('Techincal&Bugs'), ('Billing&Payments'), ('Features&Content'), ('General&Requests');
+    PRIMARY KEY (user_id, category_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES ticket_categories(category_id) ON DELETE CASCADE
+);
 
-INSERT INTO ticket_status(name)
-VALUES ('Sent / Awaiting response'), ('Response received'), ('Deleted');
+INSERT INTO user_roles (name)
+VALUES ('Клиент'), ('Администратор');
+
+INSERT INTO ticket_categories (name)
+VALUES ('Авторизация и профиль'), ('Технические проблемы и баги'), ('Оплата и счета'), ('Функционал и контент'), ('Общие вопросы');
+
+INSERT INTO ticket_status (name)
+VALUES ('Отправлено / Ожидает ответа'), ('Получен ответ'), ('Удалено');
+
+
+INSERT INTO users (name, surname, patronymic, login, password, user_role)
+VALUES
+    ('Иван', 'Иванов', 'Иванович', 'ivan_client', 'hash_pass_1', 1),
+    ('Петр', 'Петров', 'Петрович', 'petr_client', 'hash_pass_2', 1),
+    ('Анна', 'Сидорова', 'Алексеевна', 'anna_client', 'hash_pass_3', 1),
+    ('Алексей', 'Админов', 'Сергеевич', 'alex_admin', 'admin_pass_1', 2),
+    ('Дмитрий', 'Мастеров', 'Игоревич', 'dima_admin', 'admin_pass_2', 2),
+    ('Елена', 'Техподдержкова', 'Владимировна', 'elena_admin', 'admin_pass_3', 2);
+
+INSERT INTO executor_categories (user_id, category_id)
+VALUES (4, 1), (4, 2), (5, 3), (6, 2);
+
+INSERT INTO tickets (ticket_category_id, ticket_description, current_status_id, user_id, executor_id)
+VALUES
+    (1, 'Не могу зайти на сайт, пишет неверный пароль', 2, 1, 4),
+    (3, 'Дважды списались деньги за подписку', 1, 2, 5),
+    (2, 'Мобильное приложение вылетает при запуске', 2, 3, 6);
+
+
+INSERT INTO ticket_resolutions (ticket_id, solution_text)
+VALUES
+    (1, 'Сбросили пароль в панели управления. Новый отправлен на почту.'),
+    (3, 'Проблема обнаружена в логах приложения. Обновите приложение.');
