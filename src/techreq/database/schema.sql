@@ -68,12 +68,12 @@ CREATE TABLE ticket_resolutions (
 
 -- Таблица с возможностями сотрудников
 CREATE TABLE executor_categories (
-    user_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
+    executor_category_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    executor_id INTEGER NOT NULL,
+    ticket_category_id INTEGER NOT NULL,
 
-    PRIMARY KEY (user_id, category_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES ticket_categories(category_id) ON DELETE CASCADE
+    FOREIGN KEY (executor_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (ticket_category_id) REFERENCES ticket_categories(category_id) ON DELETE CASCADE
 );
 
 INSERT INTO user_roles (name)
@@ -95,7 +95,7 @@ VALUES
     ('Дмитрий', 'Мастеров', 'Игоревич', 'dima_admin', 'admin_pass_2', 2),
     ('Елена', 'Техподдержкова', 'Владимировна', 'elena_admin', 'admin_pass_3', 2);
 
-INSERT INTO executor_categories (user_id, category_id)
+INSERT INTO executor_categories (executor_id, ticket_category_id)
 VALUES (4, 1), (4, 2), (5, 3), (6, 2);
 
 INSERT INTO tickets (ticket_category_id, ticket_description, current_status_id, user_id, executor_id)
