@@ -61,7 +61,7 @@ CREATE TABLE tickets (
 CREATE TABLE ticket_resolutions (
     resolution_id INTEGER PRIMARY KEY AUTOINCREMENT,
     ticket_id INTEGER NOT NULL UNIQUE,
-    solution_text TEXT NOT NULL,
+    solution_text TEXT,
 
     FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE -- Если удаляется в главной таблице, то удалится и в зависимой
 );
@@ -83,29 +83,28 @@ INSERT INTO ticket_categories (name)
 VALUES ('Авторизация и профиль'), ('Технические проблемы и баги'), ('Оплата и счета'), ('Функционал и контент'), ('Общие вопросы');
 
 INSERT INTO ticket_status (name)
-VALUES ('Отправлено / Ожидает ответа'), ('Получен ответ'), ('Удалено');
+VALUES ('Отправлено / Ожидает ответа'), ('Получен ответ');
+
+-- INSERT INTO users (name, surname, patronymic, login, password, user_role)
+-- VALUES
+--     ('Иван', 'Иванов', 'Иванович', 'ivan_client', 'hash_pass_1', 1),
+--     ('Петр', 'Петров', 'Петрович', 'petr_client', 'hash_pass_2', 1),
+--     ('Анна', 'Сидорова', 'Алексеевна', 'anna_client', 'hash_pass_3', 1),
+--     ('Алексей', 'Админов', 'Сергеевич', 'alex_admin', 'admin_pass_1', 2),
+--     ('Дмитрий', 'Мастеров', 'Игоревич', 'dima_admin', 'admin_pass_2', 2),
+--     ('Елена', 'Техподдержкова', 'Владимировна', 'elena_admin', 'admin_pass_3', 2);
+
+-- INSERT INTO executor_categories (executor_id, ticket_category_id)
+-- VALUES (4, 1), (4, 2), (5, 3), (6, 2);
+
+-- INSERT INTO tickets (ticket_category_id, ticket_description, current_status_id, user_id, executor_id)
+-- VALUES
+--     (1, 'Не могу зайти на сайт, пишет неверный пароль', 2, 1, 4),
+--     (3, 'Дважды списались деньги за подписку', 1, 2, 5),
+--     (2, 'Мобильное приложение вылетает при запуске', 2, 3, 6);
 
 
-INSERT INTO users (name, surname, patronymic, login, password, user_role)
-VALUES
-    ('Иван', 'Иванов', 'Иванович', 'ivan_client', 'hash_pass_1', 1),
-    ('Петр', 'Петров', 'Петрович', 'petr_client', 'hash_pass_2', 1),
-    ('Анна', 'Сидорова', 'Алексеевна', 'anna_client', 'hash_pass_3', 1),
-    ('Алексей', 'Админов', 'Сергеевич', 'alex_admin', 'admin_pass_1', 2),
-    ('Дмитрий', 'Мастеров', 'Игоревич', 'dima_admin', 'admin_pass_2', 2),
-    ('Елена', 'Техподдержкова', 'Владимировна', 'elena_admin', 'admin_pass_3', 2);
-
-INSERT INTO executor_categories (executor_id, ticket_category_id)
-VALUES (4, 1), (4, 2), (5, 3), (6, 2);
-
-INSERT INTO tickets (ticket_category_id, ticket_description, current_status_id, user_id, executor_id)
-VALUES
-    (1, 'Не могу зайти на сайт, пишет неверный пароль', 2, 1, 4),
-    (3, 'Дважды списались деньги за подписку', 1, 2, 5),
-    (2, 'Мобильное приложение вылетает при запуске', 2, 3, 6);
-
-
-INSERT INTO ticket_resolutions (ticket_id, solution_text)
-VALUES
-    (1, 'Сбросили пароль в панели управления. Новый отправлен на почту.'),
-    (3, 'Проблема обнаружена в логах приложения. Обновите приложение.');
+-- INSERT INTO ticket_resolutions (ticket_id, solution_text)
+-- VALUES
+--     (1, 'Сбросили пароль в панели управления. Новый отправлен на почту.'),
+--     (3, 'Проблема обнаружена в логах приложения. Обновите приложение.');
