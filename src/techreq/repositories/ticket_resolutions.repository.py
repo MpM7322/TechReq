@@ -1,5 +1,5 @@
-from src.techreq.database.techreq_db import get_connection
-from src.techreq.models.ticket_resolution import TicketResolution
+from techreq.database.techreq_db import get_connection
+from techreq.models.ticket_resolution import TicketResolution
 
 # Вспомогательная функция преобразования данных
 def _map(row) -> TicketResolution:
@@ -13,10 +13,14 @@ def answer_ticket(ticket_id: int, solution_text: str):
     cur.execute("""
         INSERT INTO ticket_resolutions(ticket_id, solution_text)
         VALUES (?, ?)
-    """, (solution_text, ticket_id))
+    """, (ticket_id, solution_text,))
+
+    resolution_id = cur.lastrowid
 
     conn.commit()
     conn.close()
+
+    return resolution_id
 
 # Функция для получения всех записей
 def get_all() -> list[TicketResolution]:
@@ -24,8 +28,9 @@ def get_all() -> list[TicketResolution]:
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT resolution_id, ticket_id, solution_text
-        FROM ticket_resolutions
+        SELECT tr.resolution_id, tr.ticket_id, t.ticket_description, tr.solution_text
+        FROM ticket_resolutions tr
+        JOIN tickets t ON tr.ticket_id = t.ticket_id
     """)
 
     rows = cur.fetchall() # Преобразование всех записей в кортежи
@@ -39,10 +44,11 @@ def get_by_id(ticket_id: int) -> TicketResolution | None:
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT resolution_id, ticket_id, solution_text
-        FROM ticket_resolutions
-        WHERE ticket_id = ?
-    """, (ticket_id))
+        SELECT tr.resolution_id, tr.ticket_id, t.ticket_description, tr.solution_text
+        FROM ticket_resolutions tr
+        JOIN tickets t ON tr.ticket_id = t.ticket_id
+        WHERE tr.ticket_id = ?
+    """, (ticket_id,))
 
     row = cur.fetchone() # Возвращает одну запись из БД
     conn.close()
