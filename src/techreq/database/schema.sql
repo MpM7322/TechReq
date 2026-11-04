@@ -66,16 +66,6 @@ CREATE TABLE ticket_resolutions (
     FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE -- Если удаляется в главной таблице, то удалится и в зависимой
 );
 
--- Таблица с возможностями сотрудников
-CREATE TABLE executor_categories (
-    executor_category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    executor_id INTEGER NOT NULL,
-    ticket_category_id INTEGER NOT NULL,
-
-    FOREIGN KEY (executor_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (ticket_category_id) REFERENCES ticket_categories(category_id) ON DELETE CASCADE
-);
-
 INSERT INTO user_roles (name)
 VALUES ('Клиент'), ('Администратор');
 
@@ -85,8 +75,8 @@ VALUES ('Авторизация и профиль'), ('Технические п
 INSERT INTO ticket_status (name)
 VALUES ('Отправлено / Ожидает ответа'), ('Получен ответ');
 
-INSERT INTO users (name, surname, patronymic, login, password, user_role)
--- VALUES ('Матвей', 'Андрюков', 'Викторович', 'Matvey', 'ButerBrod223)', 2);
+-- INSERT INTO users (name, surname, patronymic, login, password, user_role)
+-- VALUES ('Матвей', 'Андрюков', 'Викторович', 'Matvey', 'ButerBrod223)', 2),
 --     ('Петр', 'Петров', 'Петрович', 'petr_client', 'hash_pass_2', 1),
 --     ('Анна', 'Сидорова', 'Алексеевна', 'anna_client', 'hash_pass_3', 1),
 --     ('Алексей', 'Админов', 'Сергеевич', 'alex_admin', 'admin_pass_1', 2),

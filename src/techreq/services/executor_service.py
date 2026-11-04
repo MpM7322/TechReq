@@ -29,8 +29,8 @@ def get_system_stats() -> dict:
         "Всего клиентов": len([user for user in all_users if user.user_role == CLIENT_ROLE_ID]),
         "Всего сотрудников": len([user for user in all_users if user.user_role == EXECUTOR_ROLE_ID]),
         "Всего заявок": len(all_tickets),
-        "Всего заявок, которые ожидают ответа": len(new_tickets),
-        "Всего заявок, которые получили ответ": len(closed_tickets)
+        "Всего заявок, которые ожидают ответа": (new_tickets),
+        "Всего заявок, которые получили ответ": (closed_tickets)
     }
     return stats
 

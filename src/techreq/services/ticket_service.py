@@ -46,6 +46,8 @@ def get_tickets_by_user_id(user_id: int) -> list[Ticket]:
     if not user_id:
         raise Exception("ID пользователя не может быть пустым!")
 
+    user_id = int(user_id)
+
     if not user_repository.get_by_id(user_id):
         raise Exception(f"Пользователя с ID = {user_id} не существует! Необходима регистрация!")
 
@@ -61,6 +63,9 @@ def set_executor(ticket_id: int, executor_id: int) -> Ticket:
 
     if not executor_id:
         raise Exception("ID сотрудник не может быть пустым!")
+
+    ticket_id = int(ticket_id)
+    executor_id = int(executor_id)
 
     ticket = ticket_repository.get_by_id(ticket_id)
     if not ticket:
@@ -114,9 +119,13 @@ def get_tickets_by_executor_id(executor_id: int) -> list[Ticket]:
     if not executor_id:
         raise Exception("ID пользователя не может быть пустым!")
 
+    executor_id = int(executor_id)
+
     executor = user_repository.get_by_id(executor_id)
     if not executor:
         raise Exception(f"Пользователя с ID = {executor_id} не существует! Необходима регистрация!")
 
     if executor.user_role != EXECUTOR_ROLE_ID:
         raise Exception(f"Пользователь с ID = {executor_id} не является сотрудником! Просмотр его заявок невозможен!")
+
+    return ticket_repository.get_by_executor_id(executor_id) 
