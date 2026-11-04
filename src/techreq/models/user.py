@@ -7,7 +7,7 @@ class User:
     surname: str
     patronymic: str
     login: str
-    password: str
+    password_hash: str
     user_role: int
 
     user_role_name: str | None = None

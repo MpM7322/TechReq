@@ -1,3 +1,3 @@
-from techreq.repositories import user_repository
+from techreq.services import auth_service
 
-print(user_repository.get_by_id(1))
+auth_service.create_default_executor()

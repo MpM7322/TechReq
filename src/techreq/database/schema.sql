@@ -86,7 +86,7 @@ INSERT INTO ticket_status (name)
 VALUES ('Отправлено / Ожидает ответа'), ('Получен ответ');
 
 INSERT INTO users (name, surname, patronymic, login, password, user_role)
-VALUES ('Андрюков', 'Матвей', 'Викторович', 'Matvey', 'ButerBrod223)', 2);
+-- VALUES ('Матвей', 'Андрюков', 'Викторович', 'Matvey', 'ButerBrod223)', 2);
 --     ('Петр', 'Петров', 'Петрович', 'petr_client', 'hash_pass_2', 1),
 --     ('Анна', 'Сидорова', 'Алексеевна', 'anna_client', 'hash_pass_3', 1),
 --     ('Алексей', 'Админов', 'Сергеевич', 'alex_admin', 'admin_pass_1', 2),

@@ -119,6 +119,8 @@ def set_executor(ticket_id: int, executor_id: int):
     conn.commit()
     conn.close()
 
+# Функция для 
+
 # Функция для изменения статуса заявки, в случае если на неё ответили
 def update_ticket_status(ticket_id: int):
     conn = get_connection()
