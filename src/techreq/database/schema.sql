@@ -60,7 +60,7 @@ CREATE TABLE tickets (
 -- Таблица с решениями заявок
 CREATE TABLE ticket_resolutions (
     resolution_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ticket_id INTEGER NOT NULL UNIQUE,
+    ticket_id INTEGER NOT NULL,
     solution_text TEXT,
 
     FOREIGN KEY (ticket_id) REFERENCES tickets(ticket_id) ON DELETE CASCADE -- Если удаляется в главной таблице, то удалится и в зависимой
