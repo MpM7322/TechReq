@@ -2,9 +2,10 @@ from techreq.database.techreq_db import init_db
 from techreq.services.auth_service import create_default_executor
 from auth import login, reg_client, reg_executor
 from menu import client_menu, executor_menu
+from techreq.services.export_service import export_all_formats
 
 def main():
-    init_db()
+    # init_db()
     create_default_executor()
 
     while True:
@@ -35,6 +36,8 @@ def main():
 
         elif choice == "0":
             print("\nСпасибо за использование TechReq. До свидания!")
+            export_all_formats("tickets")
+            print("\nДанные экспортированы в папку out!")
             break
 
         else:

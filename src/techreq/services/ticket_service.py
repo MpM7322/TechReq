@@ -128,4 +128,6 @@ def get_tickets_by_executor_id(executor_id: int) -> list[Ticket]:
     if executor.user_role != EXECUTOR_ROLE_ID:
         raise Exception(f"Пользователь с ID = {executor_id} не является сотрудником! Просмотр его заявок невозможен!")
 
-    return ticket_repository.get_by_executor_id(executor_id) 
+    executor_tickets = ticket_repository.get_by_executor_id(executor_id)
+    
+    return [ticket for ticket in executor_tickets if ticket.current_status_id == 1]
