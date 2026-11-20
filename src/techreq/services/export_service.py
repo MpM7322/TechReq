@@ -31,7 +31,7 @@ def get_data_from_database(table_name: str) -> list:
 
             related_id = item.pop(column_name) # Получаем ID связанной записи из другой таблицы
 
-            if column_name.endswith("_id"): # Создание красивого ключа
+            if column_name.endswith("_id"): # Создание красивого ключа 
                 new_key = column_name[:-3]
             else:
                 new_key = other_table
@@ -41,7 +41,7 @@ def get_data_from_database(table_name: str) -> list:
                 related_row = cursor.fetchone()
 
                 if related_row is not None:
-                    item[new_key] = dict(related_row)
+                    item[new_key] = dict(related_row) # Превращаем связанную строчку в словарь
                 else:
                     item[new_key] = None
 
@@ -133,7 +133,7 @@ def save_to_csv(data: list, out_dir: str = "out"):
                 headers.append(key)
 
     with open(file_path, "w", encoding = "utf-8-sig", newline = "") as file: # "utf-8-sig" - добавляет в начало файла невидимую метку BOM, которая говорит, что файл запсиан в utf-8
-        writer = csv.DictWriter(file, fieldnames = headers, delimiter = ";") # Записыватель, который раскладывает словари по колонкам
+        writer = csv.DictWriter(file, fieldnames = headers, delimiter = ";") # Записыватель, который раскладывает словари по колонкам, DictWriter - превращает список словарей в строки таблицы
         writer.writeheader() # Записывает в файл первую строчку таблицы с названиями из headers
         writer.writerows(csv_rows) # Выставляет значения под нужный заголовок
 
@@ -146,7 +146,4 @@ def export_all_formats(table_name: str, out_dir: str = "out"):
     save_to_xml(data, out_dir)
     save_to_csv(data, out_dir)
 
-if __name__ == "__main__":
-    export_all_formats("tickets")
-    print("Готово! Все 4 файла созданы в папке out/")
 
